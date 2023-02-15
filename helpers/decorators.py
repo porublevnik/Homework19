@@ -10,7 +10,7 @@ def auth_required(func):
         data = request.headers['Authorization']
         token = data.split('Bearer ')[-1]
         try:
-            jwt.decode(token, secret=SECRET, algorithms=[ALGO])
+            jwt.decode(token, key=SECRET, algorithms=[ALGO])
         except Exception as e:
             print('JWT Decode Exception', e)
             abort(401)
@@ -25,7 +25,7 @@ def admin_required(func):
         data = request.headers['Authorization']
         token = data.split('Bearer ')[-1]
         try:
-            user = jwt.decode(token, secret=SECRET, algorithms=[ALGO])
+            user = jwt.decode(token, key=SECRET, algorithms=[ALGO])
             if user['role'] != 'admin':
                 return 'Role "admin" required', 403
         except Exception as e:
